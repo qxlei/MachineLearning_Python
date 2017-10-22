@@ -2,25 +2,29 @@
 import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib.font_manager import FontProperties
+#导入三部分：第一：numpy 第二：plt 第三：字体
+#============================================================
 font = FontProperties(fname=r"c:\windows\fonts\simsun.ttc", size=14)    # 解决windows环境下画图汉字乱码问题
+#=============必须修改字体才行=========================
 
-
-def linearRegression(alpha=0.01,num_iters=400):
-    print u"加载数据...\n"
+def linearRegression(alpha=0.01,num_iters=400):#学习率和迭代次数是由人为设定的
+    print("加载数据...\n")
     
     data = loadtxtAndcsv_data("data.txt",",",np.float64)  #读取数据
     X = data[:,0:-1]      # X对应0到倒数第2列                  
     y = data[:,-1]        # y对应最后一列  
     m = len(y)            # 总的数据条数
     col = data.shape[1]      # data的列数
-    
+    #===========================================================================
+    #载入数据，并将数据处理成需要处理的的形式：训练集和测试集
     X,mu,sigma = featureNormaliza(X)    # 归一化
     plot_X1_X2(X)         # 画图看一下归一化效果
-    
+    #=============================
+    #归一化处理
     X = np.hstack((np.ones((m,1)),X))    # 在X前加一列1
-    
-    print u"\n执行梯度下降算法....\n"
-    
+    #加上常数项
+    print("\n执行梯度下降算法....\n")
+    #初始化参数theta
     theta = np.zeros((col,1))
     y = y.reshape(-1,1)   #将行向量转化为列
     theta,J_history = gradientDescent(X, y, theta, alpha, num_iters)
@@ -73,7 +77,7 @@ def gradientDescent(X,y,theta,alpha,num_iters):
         temp[:,i] = theta - ((alpha/m)*(np.dot(np.transpose(X),h-y)))   #梯度的计算
         theta = temp[:,i]
         J_history[i] = computerCost(X,y,theta)      #调用计算代价函数
-        print '.',      
+        print('.')      
     return theta,J_history  
 
 # 计算代价函数
